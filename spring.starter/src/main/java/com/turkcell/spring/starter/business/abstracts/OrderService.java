@@ -1,0 +1,25 @@
+package com.turkcell.spring.starter.business.abstracts;
+
+import com.turkcell.spring.starter.entities.Order;
+import com.turkcell.spring.starter.entities.dtos.OrderForAddDto;
+import com.turkcell.spring.starter.entities.dtos.OrderForGetById;
+import com.turkcell.spring.starter.entities.dtos.OrderForListingDto;
+import com.turkcell.spring.starter.entities.dtos.OrderForUpdateDto;
+
+import java.util.List;
+
+public interface OrderService {
+    List<Order> getAll();
+    Order addOrder(Order order);
+    Order getByOrderId(long OrderId);
+    void deleteByOrderId(long deleteByOrderId);
+
+    List<OrderForListingDto> orderListing();
+    List<OrderForGetById> orderId(int orderId);
+
+    Order updateOrder(int id, OrderForUpdateDto orderForUpdateDto);
+
+    void addOrderDto(OrderForAddDto orderForUpdateDto);
+
+
+}
