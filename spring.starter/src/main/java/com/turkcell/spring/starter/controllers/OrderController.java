@@ -1,21 +1,19 @@
 package com.turkcell.spring.starter.controllers;
 
 import com.turkcell.spring.starter.business.abstracts.OrderService;
-import com.turkcell.spring.starter.entities.Category;
 import com.turkcell.spring.starter.entities.Order;
 import com.turkcell.spring.starter.entities.OrderDetail;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.*;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForAddDto2;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForGetById;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForUpdateDto;
 import jakarta.validation.Valid;
-import org.aspectj.weaver.ast.Or;
-import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,7 +59,7 @@ public class OrderController {
 //        return new ResponseEntity<List<OrderForGetById>>(getOrderId,HttpStatus.OK);
 //    }
     @GetMapping("getById")
-    public OrderForGetById getByOrderId( int id){
+    public OrderForGetById getByOrderId(int id){
         OrderForGetById getId= orderService.orderId(id);
        return getId;
     }
@@ -87,7 +85,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public void add( @RequestBody  OrderForAddDto2 request){
+    public void add( @RequestBody OrderForAddDto2 request){
         orderService.add(request);
 
     }

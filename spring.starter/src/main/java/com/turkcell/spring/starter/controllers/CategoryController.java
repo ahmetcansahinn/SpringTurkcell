@@ -2,9 +2,9 @@ package com.turkcell.spring.starter.controllers;
 
 import com.turkcell.spring.starter.business.abstracts.CategoryService;
 import com.turkcell.spring.starter.entities.Category;
-import com.turkcell.spring.starter.entities.dtos.CategoryForAddDto;
-import com.turkcell.spring.starter.entities.dtos.CategoryForListingDto;
-import com.turkcell.spring.starter.entities.dtos.CategoryForUpdateDto;
+import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForAddDto;
+import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForListingDto;
+import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForUpdateDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

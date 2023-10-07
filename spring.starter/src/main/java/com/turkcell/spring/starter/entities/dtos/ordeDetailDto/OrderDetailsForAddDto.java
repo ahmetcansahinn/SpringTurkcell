@@ -1,4 +1,4 @@
-package com.turkcell.spring.starter.entities.dtos;
+package com.turkcell.spring.starter.entities.dtos.ordeDetailDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

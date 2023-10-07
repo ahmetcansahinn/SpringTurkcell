@@ -4,7 +4,7 @@ import com.turkcell.spring.starter.business.abstracts.OrderDetailService;
 import com.turkcell.spring.starter.entities.Order;
 import com.turkcell.spring.starter.entities.OrderDetail;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.OrderDetailsForAddDto;
+import com.turkcell.spring.starter.entities.dtos.ordeDetailDto.OrderDetailsForAddDto;
 import com.turkcell.spring.starter.repositories.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

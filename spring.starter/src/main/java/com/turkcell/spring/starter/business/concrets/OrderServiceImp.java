@@ -4,17 +4,15 @@ import com.turkcell.spring.starter.business.abstracts.OrderDetailService;
 import com.turkcell.spring.starter.business.abstracts.OrderService;
 import com.turkcell.spring.starter.business.exception.BusinessException;
 import com.turkcell.spring.starter.entities.*;
-import com.turkcell.spring.starter.entities.dtos.*;
-import com.turkcell.spring.starter.repositories.OrderDetailRepository;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForAddDto2;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForGetById;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForUpdateDto;
 import com.turkcell.spring.starter.repositories.OrderRepository;
-import com.turkcell.spring.starter.repositories.ProductRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 @Service
 public class OrderServiceImp implements OrderService {

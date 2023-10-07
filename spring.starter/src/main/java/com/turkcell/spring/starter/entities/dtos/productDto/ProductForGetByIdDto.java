@@ -1,4 +1,4 @@
-package com.turkcell.spring.starter.entities.dtos;
+package com.turkcell.spring.starter.entities.dtos.productDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.turkcell.spring.starter.entities.Supplier;

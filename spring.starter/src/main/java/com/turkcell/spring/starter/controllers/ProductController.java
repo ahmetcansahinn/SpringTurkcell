@@ -1,14 +1,11 @@
 package com.turkcell.spring.starter.controllers;
 
 import com.turkcell.spring.starter.business.abstracts.ProductService;
-import com.turkcell.spring.starter.business.concrets.ProductServiceImp;
-import com.turkcell.spring.starter.entities.Category;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.*;
+import com.turkcell.spring.starter.entities.dtos.productDto.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

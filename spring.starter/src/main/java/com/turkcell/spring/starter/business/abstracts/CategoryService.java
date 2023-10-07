@@ -1,9 +1,9 @@
 package com.turkcell.spring.starter.business.abstracts;
 
 import com.turkcell.spring.starter.entities.Category;
-import com.turkcell.spring.starter.entities.dtos.CategoryForAddDto;
-import com.turkcell.spring.starter.entities.dtos.CategoryForListingDto;
-import com.turkcell.spring.starter.entities.dtos.CategoryForUpdateDto;
+import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForAddDto;
+import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForListingDto;
+import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForUpdateDto;
 
 
 import java.util.List;

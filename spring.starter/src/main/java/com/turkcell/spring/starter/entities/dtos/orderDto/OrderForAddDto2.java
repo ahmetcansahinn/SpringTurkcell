@@ -1,6 +1,6 @@
-package com.turkcell.spring.starter.entities.dtos;
+package com.turkcell.spring.starter.entities.dtos.orderDto;
 
-import jakarta.validation.constraints.Size;
+import com.turkcell.spring.starter.entities.dtos.ordeDetailDto.OrderDetailsForAddDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

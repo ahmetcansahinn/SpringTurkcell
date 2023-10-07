@@ -3,25 +3,23 @@ package com.turkcell.spring.starter.repositories;
 import com.turkcell.spring.starter.entities.Order;
 import com.turkcell.spring.starter.entities.OrderDetail;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.OrderForAddDto;
-import com.turkcell.spring.starter.entities.dtos.OrderForGetById;
-import com.turkcell.spring.starter.entities.dtos.OrderForListingDto;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForGetById;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order,Integer> {
 
     @Query(value = "select new " +
-            "com.turkcell.spring.starter.entities.dtos.OrderForListingDto" +
+            "com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto" +
             "(o.orderId,o.orderDate, o.requiredDate, o.shippedDate, o.freight)" +
             "from Order o")
     List<OrderForListingDto> getOrder();
 
     @Query(value = "select new " +
-            "com.turkcell.spring.starter.entities.dtos.OrderForGetById" +
+            "com.turkcell.spring.starter.entities.dtos.orderDto.OrderForGetById" +
             "(o.orderId,o.orderDate, o.requiredDate, o.shippedDate, o.freight)" +
             "from Order o where o.orderId= :orderId")
 

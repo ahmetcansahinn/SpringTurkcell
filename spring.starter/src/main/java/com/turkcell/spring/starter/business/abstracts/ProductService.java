@@ -1,10 +1,10 @@
 package com.turkcell.spring.starter.business.abstracts;
 
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.ProductForAddDto;
-import com.turkcell.spring.starter.entities.dtos.ProductForGetByIdDto;
-import com.turkcell.spring.starter.entities.dtos.ProductForListingDto;
-import com.turkcell.spring.starter.entities.dtos.ProductForUpdateDto;
+import com.turkcell.spring.starter.entities.dtos.productDto.ProductForAddDto;
+import com.turkcell.spring.starter.entities.dtos.productDto.ProductForGetByIdDto;
+import com.turkcell.spring.starter.entities.dtos.productDto.ProductForListingDto;
+import com.turkcell.spring.starter.entities.dtos.productDto.ProductForUpdateDto;
 
 import java.util.List;
 import java.util.Optional;

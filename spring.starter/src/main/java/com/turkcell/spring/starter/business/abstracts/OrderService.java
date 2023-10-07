@@ -3,7 +3,10 @@ package com.turkcell.spring.starter.business.abstracts;
 import com.turkcell.spring.starter.entities.Order;
 import com.turkcell.spring.starter.entities.OrderDetail;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.*;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForAddDto2;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForGetById;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto;
+import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForUpdateDto;
 
 import java.util.List;
 
