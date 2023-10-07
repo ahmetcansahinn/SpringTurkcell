@@ -21,7 +21,7 @@ public interface CategoryService {
 
   List<Object[]> findCategoryAndProductDetails();
   void add(CategoryForAddDto request);
-  Category updateDto(int id, CategoryForUpdateDto categoryForUpdateDto);
+  Category updateDto(CategoryForUpdateDto categoryForUpdateDto);
 
 
 }

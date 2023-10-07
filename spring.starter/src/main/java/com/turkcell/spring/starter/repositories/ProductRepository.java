@@ -65,7 +65,8 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     Product findByProductName(String productName);
 
-
+//    @Query(value = "select unit_price,product_id from products where product_id=:product_id")
+//    Product productForOrder(int id);
 
 //    @Query(value = "select new " +
 //            "com.turkcell.spring.starter.entities.dtos.ProductForUpdateDto(p.productId, p.productName, p.quantityPerUnit ,p.unitPrice, p.unitInStock, p.unitOnOrder, p.reorderLevel) from Product p where p.productId=:productId")

@@ -19,7 +19,7 @@ public class CategoryController {
 
 
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
 
     @Autowired
@@ -46,7 +46,7 @@ public class CategoryController {
     }
     @PutMapping("updateDto/{id}")
     public ResponseEntity<Category> updateDto(@PathVariable("id") int id, @RequestBody @Valid CategoryForUpdateDto categoryForUpdateDto){
-        categoryService.updateDto(id,categoryForUpdateDto);
+        categoryService.updateDto(categoryForUpdateDto);
         return new ResponseEntity<Category>(HttpStatus.CREATED);
 
     }
@@ -54,6 +54,7 @@ public class CategoryController {
         Category getCategory=categoryService.getByCategoryId(CategoryId);
         return new ResponseEntity<Category>(getCategory,HttpStatus.OK);
     }
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteCategoryId(@PathVariable("id") int deleteId){
         categoryService.deleteByCategoryId(deleteId);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);

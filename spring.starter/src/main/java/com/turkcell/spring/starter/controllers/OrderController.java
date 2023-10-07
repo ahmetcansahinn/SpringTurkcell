@@ -3,13 +3,12 @@ package com.turkcell.spring.starter.controllers;
 import com.turkcell.spring.starter.business.abstracts.OrderService;
 import com.turkcell.spring.starter.entities.Category;
 import com.turkcell.spring.starter.entities.Order;
+import com.turkcell.spring.starter.entities.OrderDetail;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.dtos.OrderForAddDto;
-import com.turkcell.spring.starter.entities.dtos.OrderForGetById;
-import com.turkcell.spring.starter.entities.dtos.OrderForListingDto;
-import com.turkcell.spring.starter.entities.dtos.OrderForUpdateDto;
+import com.turkcell.spring.starter.entities.dtos.*;
 import jakarta.validation.Valid;
 import org.aspectj.weaver.ast.Or;
+import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,8 +61,8 @@ public class OrderController {
 //        return new ResponseEntity<List<OrderForGetById>>(getOrderId,HttpStatus.OK);
 //    }
     @GetMapping("getById")
-    public List<OrderForGetById> getByOrderId( int id){
-        List<OrderForGetById> getId= orderService.orderId(id);
+    public OrderForGetById getByOrderId( int id){
+        OrderForGetById getId= orderService.orderId(id);
        return getId;
     }
     @PutMapping("updateDto/{id}")
@@ -71,11 +70,28 @@ public class OrderController {
         orderService.updateOrder(id,orderForUpdateDto);
         return new ResponseEntity<Order>(HttpStatus.CREATED);
     }
-    @PostMapping("saveOrderDto")
-    public ResponseEntity addForOrderDto(@RequestBody @Valid OrderForAddDto orderForAddDto){
-        orderService.addOrderDto(orderForAddDto);
-        return new ResponseEntity("ürün eklendi", HttpStatus.CREATED);
+//    @PostMapping("saveOrderDto")
+//    public ResponseEntity addForOrderDto(@RequestBody @Valid OrderForAddDto orderForAddDto){
+//        orderService.addOrderDto(orderForAddDto);
+//        return new ResponseEntity("ürün eklendi", HttpStatus.CREATED);
+//    }
+
+    @PostMapping("addOrderDetails/{id}")
+    public ResponseEntity<List<OrderDetail>> addOrderDetails(@PathVariable("id") int id, Product product) {
+        orderService.addOrderDetails(id, product);
+        return new ResponseEntity<List<OrderDetail>>(HttpStatus.CREATED);
     }
+    @GetMapping("orderWithName")
+    public List<Object[]> getOrderName(){
+        return orderService.getOrderProductName();
+    }
+
+    @PostMapping
+    public void add( @RequestBody  OrderForAddDto2 request){
+        orderService.add(request);
+
+    }
+
 
 
 

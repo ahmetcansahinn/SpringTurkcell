@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -21,7 +22,7 @@ public class ProductController {
 //    List<Product> productList = new ArrayList<>();
 
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -130,6 +131,11 @@ public List<ProductForGetByIdDto> getById(int id){
     public List<Product> groupById(){
         List<Product> groupById=productService.groupById();
         return groupById;
+    }
+    @GetMapping("getIdd")
+    public Optional<Product> getId(int id){
+       Optional<Product> getId= productService.getId(id);
+       return getId;
     }
 
 

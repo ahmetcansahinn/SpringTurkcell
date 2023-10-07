@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,10 +17,10 @@ public class OrderForUpdateDto {
 
     private int orderId;
     @NotBlank(message = "Lütfen bir tarih giriniz.")
-    private String orderDate;
+    private LocalDate orderDate;
     @NotBlank(message = "Lütfen tarih giriniz.")
-    private String requiredDate;
-    private String shippedDate;
+    private LocalDate requiredDate;
+    private LocalDate shippedDate;
     private short shipVia;
     private String freight;
 }

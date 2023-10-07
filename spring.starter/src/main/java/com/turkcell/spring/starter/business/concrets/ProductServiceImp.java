@@ -2,7 +2,9 @@ package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.ProductService;
 import com.turkcell.spring.starter.business.exception.BusinessException;
+import com.turkcell.spring.starter.entities.Category;
 import com.turkcell.spring.starter.entities.Product;
+import com.turkcell.spring.starter.entities.Supplier;
 import com.turkcell.spring.starter.entities.dtos.ProductForAddDto;
 import com.turkcell.spring.starter.entities.dtos.ProductForGetByIdDto;
 import com.turkcell.spring.starter.entities.dtos.ProductForListingDto;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -104,12 +107,17 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<ProductForGetByIdDto> getListingProductId(int id) {
 
-
-        return productRepository.getListingProductId(id);
+      List<ProductForGetByIdDto> getByDto=productRepository.getListingProductId(id);
+      if(getByDto.isEmpty()){
+          throw new EntityNotFoundException("Aranan id'ye ait bir ürün yok");
+      }
+      return getByDto;
     }
+
 
     @Override
     public Product update(int id, ProductForUpdateDto productForUpdateDto) {
+
 
         Product product = productRepository.findById(id).orElseThrow();
 //        Product product = new Product();
@@ -124,25 +132,56 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public void add(ProductForAddDto request) {
-        productNameShouldNotLongerThanTwoCharacters(request.getProductName());
+    public void add(ProductForAddDto request) {//burası voidti Product yaptım.
+
+        productWithSameName(request.getProductName());
+        productNameShouldNotLongerThanThreeCharacters(request.getProductName());
         unitPricekShouldNotBeBiggerThan200(request.getUnitPrice());
         productNameIsChangShouldNotAddNow(request.getProductName());
-        Product product=new Product();
-//        product.setProductId();
-        product.setProductName(request.getProductName());
-        product.setUnitPrice(request.getUnitPrice());
-        product.setUnitInStock(request.getUnitInStock());
-        product.setQuantityPerUnit(request.getQuantityPerUnit());
-        product.setReorderLevel(request.getReOrderLevel());
-        productRepository.save(product);
+        Product newProduct=Product.builder()
+                .productName(request.getProductName())
+                .unitPrice(request.getUnitPrice())
+                .unitInStock(request.getUnitInStock())
+                .categories(Category.builder().categoryId(request.getCategoryId()).build())
+                .suppliers(Supplier.builder().supplierId(request.getSupplierId()).build())
+                .discontinued(0)
+                .build();
+        productRepository.save(newProduct);
+//        Product product=new Product();
+////        product.setProductId();
+//        product.setProductName(request.getProductName());
+//        product.setUnitPrice(request.getUnitPrice());
+//        product.setUnitInStock(request.getUnitInStock());
+//        product.setQuantityPerUnit(request.getQuantityPerUnit());
+//        product.setReorderLevel(request.getReOrderLevel());
+//       productRepository.save(product);
+
     }
 
+    @Override
+    public Optional<Product> getId(int id) {//Tekrar bakılacak
+       Optional<Product> product=productRepository.findById(id);
+       try {
+           if(product.isEmpty()){
+               throw new EntityNotFoundException("geçerli bir id girin");
 
-    private void productNameShouldNotLongerThanTwoCharacters(String productName){
+           }
+       }catch (EntityNotFoundException ex){
+           throw ex;
+       }
+return product;
+    }
 
-        if(productName.length()<=2){
-            throw new BusinessException("Ürün ismi 2 harften fazla olmalıdır ");
+     public void productWithSameName(String productName){
+      Product  productWithSameName=productRepository.findByProductName(productName);
+        if(productWithSameName!=null){
+            throw new BusinessException("Aynı kategoride başka ürün bulunamaz");
+        }
+     }
+    private void productNameShouldNotLongerThanThreeCharacters(String productName){
+
+        if(productName.length()<=3){
+            throw new BusinessException("Ürün ismi 3 harften fazla olmalıdır ");
         }
     }
     public void unitPricekShouldNotBeBiggerThan200(double unitPrice){
@@ -155,6 +194,7 @@ public class ProductServiceImp implements ProductService {
             throw new BusinessException("Chang isimli ürün şu an için kaydedilemiyor.");
         }
     }
+
 
 
 

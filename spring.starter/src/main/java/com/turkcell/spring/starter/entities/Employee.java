@@ -2,8 +2,11 @@ package com.turkcell.spring.starter.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -11,10 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="employees")
+@Builder
 public class Employee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="employee_id")
     private short employeeId;
 
@@ -31,7 +35,7 @@ public class Employee {
     private String titleOfCourtesy;
 
     @Column(name="birth_date")
-    private String birthDate;
+    private LocalDate birthDate;
 
     @Column(name="hire_date")
     private String hireDate;

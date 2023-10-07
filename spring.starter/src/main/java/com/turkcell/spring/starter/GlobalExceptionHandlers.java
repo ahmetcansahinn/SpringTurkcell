@@ -33,11 +33,13 @@ public class GlobalExceptionHandlers {
     public String handleBusinessException(BusinessException ex){
         return ex.getMessage();
     }
-//    @ExceptionHandler(EntityNotFoundException.class)
-//    public ResponseEntity<String> EntityNotFoundException(EntityNotFoundException ex){
-//        String message="İstenilen Entity'e ulaşılamadı"+ex.getMessage();
-//        return new ResponseEntity<>(message,HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> EntityNotFoundException(EntityNotFoundException ex){
+
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+    }
+
+
 //    @ExceptionHandler(NoSuchElementException.class)
 //    public ResponseEntity<String> handleNoSuchException(NoSuchElementException ex){
 //        return ResponseEntity.status(HttpStatus.OK).body("eleman bulunamadı");

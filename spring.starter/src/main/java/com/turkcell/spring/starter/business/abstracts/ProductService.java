@@ -7,6 +7,7 @@ import com.turkcell.spring.starter.entities.dtos.ProductForListingDto;
 import com.turkcell.spring.starter.entities.dtos.ProductForUpdateDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
     List<ProductForListingDto> getAll();
@@ -30,6 +31,8 @@ public interface ProductService {
 
     Product update(int id, ProductForUpdateDto productForUpdateDto);
     void add(ProductForAddDto request);
+
+    Optional<Product> getId(int id);
 
 
 

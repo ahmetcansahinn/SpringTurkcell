@@ -24,18 +24,7 @@ public class CategoryServiceImp implements CategoryService {
     }
 
 
-    @Override
-    public List<CategoryForListingDto> getAll() {
-//        List<Category> categories=categoryRepository.findAll();
-//        List<CategoryForListingDto> categoryForListingDtos=new ArrayList<>();
-//        for(Category c: categories){
-//            CategoryForListingDto dto=new CategoryForListingDto();
-//            dto.setCategoryId(c.getCategoryId());
-//            dto.setCategoryName(c.getCategoryName());
-//            categoryForListingDtos.add(dto);
-//        }
-        return categoryRepository.getForListing();
-    }
+
 
     @Override
     public Category addCategory(Category category) {
@@ -49,11 +38,7 @@ public class CategoryServiceImp implements CategoryService {
     }
 
 
-    @Override
-    public void deleteByCategoryId(int deleteId) {
-        categoryRepository.deleteById(deleteId);
 
-    }
 
     @Override
     public List<Category> findByCategoryNameContaining(String categoryName) {
@@ -89,9 +74,9 @@ public class CategoryServiceImp implements CategoryService {
     public void add(CategoryForAddDto request) {
         // Business Rule => Aynı isimde iki kategori olmamalı
 
-        descriptionWithSameNameShouldNotExist(request.getDescription());
-        categoryWithSameNameShouldNotExist(request.getCategoryName());
-        descriptionShouldNotMoreThan2Char(request.getDescription());
+//        descriptionWithSameNameShouldNotExist(request.getDescription());
+//        categoryWithSameNameShouldNotExist(request.getCategoryName());
+//        descriptionShouldNotMoreThan2Char(request.getDescription());
         Category category = new Category();
         category.setCategoryName(request.getCategoryName());
         category.setDescription(request.getDescription());
@@ -101,11 +86,39 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public Category updateDto(int id, CategoryForUpdateDto categoryForUpdateDto) {
-        Category category = categoryRepository.findById(id).orElseThrow();
+    public Category updateDto( CategoryForUpdateDto categoryForUpdateDto) {
+       Category category=returnCategoryByIdExist(categoryForUpdateDto.getCategoryId());
         category.setCategoryName(categoryForUpdateDto.getCategoryName());
         category.setDescription(categoryForUpdateDto.getDescription());
         return categoryRepository.save(category);
+    }
+    @Override
+    public List<CategoryForListingDto> getAll() {
+//        List<Category> categories=categoryRepository.findAll();
+//        List<CategoryForListingDto> categoryForListingDtos=new ArrayList<>();
+//        for(Category c: categories){
+//            CategoryForListingDto dto=new CategoryForListingDto();
+//            dto.setCategoryId(c.getCategoryId());
+//            dto.setCategoryName(c.getCategoryName());
+//            categoryForListingDtos.add(dto);
+//        }
+        return categoryRepository.getForListing();
+    }
+    @Override
+    public void deleteByCategoryId(int deleteId) {
+
+        Category categoryToDelete=returnCategoryByIdExist(deleteId);
+
+
+        categoryRepository.delete(categoryToDelete);
+
+    }
+    public Category returnCategoryByIdExist(int id){
+        Category categoryToDelete= categoryRepository.findById(id).orElse(null);
+        if (categoryToDelete==null)
+            throw new BusinessException("Böyle bir kategori bulunamadı");
+        return categoryToDelete;
+
     }
 
 
