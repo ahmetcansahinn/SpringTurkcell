@@ -27,10 +27,6 @@ public class ProductServiceImp implements ProductService {
         this.productRepository = productRepository;
     }
 
-
-    public Product addProduct(Product product){
-        return productRepository.save(product);
-    }
     public List<ProductForListingDto> getAll() {
         return productRepository.getListingProduct();
     }
@@ -48,11 +44,6 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> search(String productName) {
-        return productRepository.search(productName);
-    }
-
-    @Override
     public List<Product> searchNative(String productName) {
         return productRepository.searchNative(productName);
     }
@@ -64,20 +55,12 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findProductNames();
     }
 
-    @Override
-    public List<Integer> findProductId() {
-        return productRepository.findProductId();
-    }
 
     @Override
     public List<Product> topCheapest(Integer topNumber) {
         return productRepository.topCheapest(topNumber);
     }
 
-    @Override
-    public List<Product> pcGet(int id) {
-        return productRepository.pcGet(id);
-    }
 
     @Override
     public List<Product> maxAndMin() {
@@ -87,11 +70,6 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Product> minManUnit(Integer minUnit, Integer maxUnit) {
         return productRepository.minManUnit(minUnit, maxUnit);
-    }
-
-    @Override
-    public List<Product> chaiUnit(double unitPrice) {
-        return productRepository.chaiUnit(unitPrice);
     }
 
     @Override
@@ -156,20 +134,6 @@ public class ProductServiceImp implements ProductService {
 //        product.setReorderLevel(request.getReOrderLevel());
 //       productRepository.save(product);
 
-    }
-
-    @Override
-    public Optional<Product> getId(int id) {//Tekrar bakılacak
-       Optional<Product> product=productRepository.findById(id);
-       try {
-           if(product.isEmpty()){
-               throw new EntityNotFoundException("geçerli bir id girin");
-
-           }
-       }catch (EntityNotFoundException ex){
-           throw ex;
-       }
-return product;
     }
 
      public void productWithSameName(String productName){

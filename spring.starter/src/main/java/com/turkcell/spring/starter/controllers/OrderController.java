@@ -43,7 +43,7 @@ public class OrderController {
         Order getByOrderId=orderService.getByOrderId(getById);
         return new ResponseEntity<Order>(getByOrderId,HttpStatus.OK);
     }
-    @PostMapping("/delete")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") long deleteId){
         orderService.deleteByOrderId(deleteId);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
@@ -58,8 +58,8 @@ public class OrderController {
 //        List<OrderForGetById> getOrderId=orderService.orderId(orderId);
 //        return new ResponseEntity<List<OrderForGetById>>(getOrderId,HttpStatus.OK);
 //    }
-    @GetMapping("getById")
-    public OrderForGetById getByOrderId(int id){
+    @GetMapping("getById/{id}")
+    public OrderForGetById getByOrderId(@PathVariable("id") int id){
         OrderForGetById getId= orderService.orderId(id);
        return getId;
     }
@@ -84,7 +84,7 @@ public class OrderController {
         return orderService.getOrderProductName();
     }
 
-    @PostMapping
+    @PostMapping("saveDto")
     public void add( @RequestBody OrderForAddDto2 request){
         orderService.add(request);
 

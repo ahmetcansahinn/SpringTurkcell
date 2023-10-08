@@ -15,11 +15,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class OrderForGetById {
 
-    @NotBlank(message = "customer id boş bırakılamaz.")
+//    @NotBlank(message = "customer id boş bırakılamaz.")
 
 //    private String customerId;
 
-    @NotBlank(message = "Employe id boş bırakılamaz.")
+//    @NotBlank(message = "Employe id boş bırakılamaz.")
 //    private short employeeId;
     private int orderId;
     private LocalDate orderDate;

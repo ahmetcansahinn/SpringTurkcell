@@ -27,12 +27,6 @@ public class ProductController {
 
 
     }
-    @PostMapping("/save")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product){
-        Product product1=productService.addProduct(product);
-        return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
-
-    }
     @GetMapping("/all")
     public ResponseEntity<List<ProductForListingDto>> getAllProduct(){
         List<ProductForListingDto> allProduct=productService.getAll();
@@ -44,12 +38,12 @@ public ResponseEntity<Product> getByProductId(@PathVariable("id") int productId)
     Product productByID=productService.getProductById(productId);
     return new ResponseEntity<Product>(productByID,HttpStatus.OK);
 }
-@GetMapping("getById")
+@GetMapping("getByIdDto")
 public List<ProductForGetByIdDto> getById(int id){
         List<ProductForGetByIdDto> geById=productService.getListingProductId(id);
         return geById;
 }
-    @PostMapping("saveProduct")
+    @PostMapping("saveProductDto")
     public ResponseEntity add(@RequestBody @Valid ProductForAddDto request){
      productService.add(request);
         return new ResponseEntity("Ürün eklendi", HttpStatus.CREATED);
@@ -72,11 +66,6 @@ public List<ProductForGetByIdDto> getById(int id){
         List<Product> products = productService.findByProductNameContaining(message);
         return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
     }
-    @GetMapping("searchQuantity")
-    public List<Product> search(@RequestParam("name") String name) {
-        List<Product> products = productService.search(name);
-        return products;
-    }
     @GetMapping("searchNative")
     public List<Product> searchNative(@RequestParam("name") String name) {
         List<Product> products = productService.searchNative(name);
@@ -87,21 +76,10 @@ public List<ProductForGetByIdDto> getById(int id){
         List<String> products = productService.findProductNames();
         return products;
     }
-    @GetMapping("findProductId")
-    public List<Integer> findProductId(){
-        List<Integer> integers =productService.findProductId();
-        return integers;
-    }
     @GetMapping("topCheapest")
     public List<Product> topCheapest(@RequestParam("topNumber") Integer topNumber){
         List<Product> topCheapest=productService.topCheapest(topNumber);
         return topCheapest;
-    }
-
-    @GetMapping("pcGet")
-    public List<Product> pcGet(@RequestParam("id")int id){
-       List<Product>pcGet= productService.pcGet(id);
-       return pcGet;
     }
     @GetMapping("minAndMax")
     public List<Product> minAndMax(){
@@ -113,11 +91,6 @@ public List<ProductForGetByIdDto> getById(int id){
         List<Product> minMnaUnit=productService.minManUnit(minUnit, manUnit);
         return minMnaUnit;
     }
-    @GetMapping("chaiUnit")
-    public List<Product> chaiUnit(@RequestParam("unit") double unitPrice){
-        List<Product> chaiUnit=productService.chaiUnit(unitPrice);
-        return chaiUnit;
-    }
 
     @GetMapping("maxUnitPrice")
     public Double maxUnitPrice(){
@@ -128,11 +101,6 @@ public List<ProductForGetByIdDto> getById(int id){
     public List<Product> groupById(){
         List<Product> groupById=productService.groupById();
         return groupById;
-    }
-    @GetMapping("getIdd")
-    public Optional<Product> getId(int id){
-       Optional<Product> getId= productService.getId(id);
-       return getId;
     }
 
 
