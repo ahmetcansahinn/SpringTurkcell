@@ -50,11 +50,6 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public List<Category> searchNative(String categoryName) {
-        return categoryRepository.searchNative(categoryName);
-    }
-
-    @Override
     public Long countCategory() {
         return categoryRepository.countCategory();
     }

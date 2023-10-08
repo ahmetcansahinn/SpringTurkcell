@@ -15,7 +15,6 @@ public interface CategoryService {
   void deleteByCategoryId(int deleteId);
   List<Category> findByCategoryNameContaining(String categoryName);
   List<Category> search (String categoryName);
-  List<Category> searchNative (String categoryName);
   Long countCategory();
   List<Category> getById(int id);
 

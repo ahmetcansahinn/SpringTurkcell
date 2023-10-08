@@ -69,11 +69,6 @@ public class CategoryController {
         List<Category> categories = categoryService.search(name);
         return categories;
     }
-    @GetMapping("searchNative")
-    public List<Category> searchNative(@RequestParam("name") String name) {
-        List<Category> categories = categoryService.searchNative(name);
-        return categories;
-    }
     @GetMapping("countCategory")
     public Long countCategory() {
         Long countCategory = categoryService.countCategory();
@@ -115,11 +110,6 @@ public class CategoryController {
 //        return new ResponseEntity(category.getCategoryName() + " kategori eklendi", headers, HttpStatus.CREATED);
 //
    // }
-    @GetMapping("/getall")
-    public List<CategoryForListingDto> getCategories(){
-        List<CategoryForListingDto> getCategories=categoryService.getAll();
-        return getCategories;
-    }
 
 //    @GetMapping("getById")
 //    public Category getCategoryById(@RequestParam("id") int id) {

@@ -14,8 +14,6 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
     @Query(value="Select c FROM Category c where c.categoryName LIKE %:categoryName%", nativeQuery = false)
     List<Category> search (String categoryName);
 
-    @Query(value = "Select * from category where category_name LIKE %:categoryName%", nativeQuery = true)
-    List<Category> searchNative (String categoryName);
 
     @Query(value="Select COUNT(c.categoryId) FROM Category c ", nativeQuery = false)
     Long countCategory();
