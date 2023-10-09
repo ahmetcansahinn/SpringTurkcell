@@ -31,13 +31,8 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public Order addOrder(Order order) {
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public Order getByOrderId(long OrderId) {
-        return orderRepository.findById((int) OrderId).get();
+    public Order getByOrderId(int OrderId) {
+        return orderRepository.findById(OrderId).orElseThrow();
 
     }
 
@@ -61,9 +56,8 @@ public class OrderServiceImp implements OrderService {
     public Order updateOrder(int id, OrderForUpdateDto request) {
         Order order=orderRepository.findById(id).orElseThrow();
         order.setOrderId(request.getOrderId());
-        order.setOrderDate(request.getOrderDate());
+        order.setOrderDate(LocalDate.now());
         order.setRequiredDate(request.getRequiredDate());
-        order.setShippedDate(request.getShippedDate());
         order.setShippedDate(request.getShippedDate());
         order.setFreight(request.getFreight());
         return orderRepository.save(order);
@@ -87,38 +81,7 @@ public class OrderServiceImp implements OrderService {
         orderDetailService.addItemsToOrder(order, request.getItems());
     }
 
-//    @Override
-//    public void addOrderDto(OrderForAddDto orderAddDto) {
-////        customerIdIsNotFound(orderAddDto.getCustomerId());
-//
-//        orderIdShouldNotMoreThan13000(orderAddDto.getOrderId());
-//        shippedDateShouldNotBeMoreThan10Char(orderAddDto.getShippedDate());
-//        freightShouldBeLessThan7Char(orderAddDto.getFreight());
-//      Order order=new Order();
-//        LocalDate localdate=LocalDate.now();
-//
-//        if (localdate.compareTo(LocalDate.parse(orderAddDto.getRequiredDate()))>0) {
-//            throw new BusinessException("Lütfen geçmiş bir tarih girmeyin");
-//        } else {
-//            order.setRequiredDate(orderAddDto.getRequiredDate());
-//        }
-////      order.setCustomerId(orderAddDto.getCustomerId());
-//        OrderForAddDto orderForAddDto=new OrderForAddDto();
-//      order.setOrderId(orderAddDto.getOrderId());
-//      order.setOrderDate(String.valueOf(localdate));
-//      order.setRequiredDate(String.valueOf(localdate));
-//      order.setShippedDate(orderAddDto.getShippedDate());
-//      order.setShipVia(orderAddDto.getShipVia());
-//      order.setFreight(orderAddDto.getFreight());
-////      orderForAddDto.setEmployeeId(orderAddDto.getEmployeeId());
-//
-//      orderRepository.save(order);
-//    }
 
-    @Override
-    public List<OrderDetail> addOrderDetails(int id, Product product) {
-        return orderRepository.addOrderDetails(id, product);
-    }
 
     @Override
     public List<Object[]> getOrderProductName() {
@@ -131,11 +94,7 @@ public class OrderServiceImp implements OrderService {
             throw new BusinessException("Ürün Id'si 13000'den büyük olamaz.");
         }
     }
-//    public void shippedDateShouldNotBeMoreThan10Char(String shippedDate){
-//        if (shippedDate.length()>10){
-//            throw  new BusinessException("Lütfen geçerli bir tarih giriniz.");
-//        }
-//    }
+
     public void freightShouldBeLessThan7Char(String freight){
         if (freight.length()>7){
             throw new BusinessException("Belirtilen Freight alanı kurallara göre fazla");

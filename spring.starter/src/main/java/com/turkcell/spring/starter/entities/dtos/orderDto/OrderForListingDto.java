@@ -16,6 +16,6 @@ public class OrderForListingDto {
     private LocalDate orderDate;
     private LocalDate requiredDate;
     private LocalDate shippedDate;
-    private short shipVia;
+//    private short shipVia;
     private String freight;
 }

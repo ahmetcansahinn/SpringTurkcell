@@ -16,11 +16,9 @@ import java.time.LocalDate;
 public class OrderForUpdateDto {
 
     private int orderId;
-    @NotBlank(message = "Lütfen bir tarih giriniz.")
     private LocalDate orderDate;
-    @NotBlank(message = "Lütfen tarih giriniz.")
     private LocalDate requiredDate;
     private LocalDate shippedDate;
-    private short shipVia;
+//    private short shipVia;
     private String freight;
 }

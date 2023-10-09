@@ -26,12 +26,6 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-    @PostMapping("/save")
-    public ResponseEntity<Order> addOrder(@RequestBody Order order){
-        Order addOrder= orderService.addOrder(order);
-        return new ResponseEntity<Order>(addOrder,HttpStatus.CREATED);
-
-    }
     @GetMapping("/all")
     public ResponseEntity<List<Order>> getAll(){
         List<Order> getAll= orderService.getAll();
@@ -39,11 +33,11 @@ public class OrderController {
 
     }
     @GetMapping("/id")
-    public ResponseEntity<Order>getById(@PathVariable("id") long getById ){
+    public ResponseEntity<Order>getById(@PathVariable("id") int getById ){
         Order getByOrderId=orderService.getByOrderId(getById);
         return new ResponseEntity<Order>(getByOrderId,HttpStatus.OK);
     }
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") long deleteId){
         orderService.deleteByOrderId(deleteId);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
@@ -53,11 +47,7 @@ public class OrderController {
         List<OrderForListingDto> getAll= orderService.orderListing();
         return new ResponseEntity<List<OrderForListingDto>>(getAll,HttpStatus.OK);
     }
-//    @GetMapping("getById/{id}")
-//    public ResponseEntity<List<OrderForGetById>> getOrderId(@PathVariable("id") int orderId){
-//        List<OrderForGetById> getOrderId=orderService.orderId(orderId);
-//        return new ResponseEntity<List<OrderForGetById>>(getOrderId,HttpStatus.OK);
-//    }
+
     @GetMapping("getById/{id}")
     public OrderForGetById getByOrderId(@PathVariable("id") int id){
         OrderForGetById getId= orderService.orderId(id);
@@ -68,17 +58,8 @@ public class OrderController {
         orderService.updateOrder(id,orderForUpdateDto);
         return new ResponseEntity<Order>(HttpStatus.CREATED);
     }
-//    @PostMapping("saveOrderDto")
-//    public ResponseEntity addForOrderDto(@RequestBody @Valid OrderForAddDto orderForAddDto){
-//        orderService.addOrderDto(orderForAddDto);
-//        return new ResponseEntity("ürün eklendi", HttpStatus.CREATED);
-//    }
 
-    @PostMapping("addOrderDetails/{id}")
-    public ResponseEntity<List<OrderDetail>> addOrderDetails(@PathVariable("id") int id, Product product) {
-        orderService.addOrderDetails(id, product);
-        return new ResponseEntity<List<OrderDetail>>(HttpStatus.CREATED);
-    }
+
     @GetMapping("orderWithName")
     public List<Object[]> getOrderName(){
         return orderService.getOrderProductName();
@@ -92,29 +73,5 @@ public class OrderController {
 
 
 
-
-
-
-
-//    @GetMapping("order")
-//    public List<Order> getOrderList() {
-//
-//        return orderList ;
-//    }
-//    @PostMapping("order")
-//    public ResponseEntity addOrder(@RequestBody Order order) {
-//        //built in-Hali hazırda mevcut class
-//        if (order.getOrderId() <= 0) {
-//            return new ResponseEntity<>("Eklenecek sipariş id'si 0'dan büyük olmalıdır", HttpStatus.BAD_REQUEST);
-//        }
-//        orderList.add(order);
-//
-//        return new ResponseEntity(order.getOrderId() + " kategori eklendi",  HttpStatus.CREATED);
-//
-//    }
-//    @GetMapping("getAll")
-//    public List<Order> orders(){
-//        return orderService.getAll();
-//    }
 
 }

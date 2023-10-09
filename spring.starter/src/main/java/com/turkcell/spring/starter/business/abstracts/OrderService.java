@@ -12,8 +12,7 @@ import java.util.List;
 
 public interface OrderService {
     List<Order> getAll();
-    Order addOrder(Order order);
-    Order getByOrderId(long OrderId);
+    Order getByOrderId(int OrderId);
     void deleteByOrderId(long deleteByOrderId);
 
     List<OrderForListingDto> orderListing();
@@ -21,9 +20,6 @@ public interface OrderService {
 
     Order updateOrder(int id, OrderForUpdateDto orderForUpdateDto);
 
-//    void addOrderDto(OrderForAddDto orderForUpdateDto);
-
-    List<OrderDetail> addOrderDetails (int id, Product product);
     List<Object[]> getOrderProductName();
     void add(OrderForAddDto2 request);
 
