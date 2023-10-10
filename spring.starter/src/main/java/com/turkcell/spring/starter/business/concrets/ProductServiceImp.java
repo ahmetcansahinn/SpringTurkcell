@@ -3,6 +3,7 @@ package com.turkcell.spring.starter.business.concrets;
 import com.turkcell.spring.starter.business.abstracts.ProductService;
 import com.turkcell.spring.starter.business.exception.BusinessException;
 import com.turkcell.spring.starter.entities.Category;
+import com.turkcell.spring.starter.entities.Order;
 import com.turkcell.spring.starter.entities.Product;
 import com.turkcell.spring.starter.entities.Supplier;
 import com.turkcell.spring.starter.entities.dtos.productDto.ProductForAddDto;
@@ -11,6 +12,9 @@ import com.turkcell.spring.starter.entities.dtos.productDto.ProductForListingDto
 import com.turkcell.spring.starter.entities.dtos.productDto.ProductForUpdateDto;
 import com.turkcell.spring.starter.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +23,14 @@ import java.util.Optional;
 
 
 @Service
-
+@RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
     private ProductRepository productRepository;
-    @Autowired
-    public ProductServiceImp(ProductRepository productRepository) {
+    private ModelMapper modelMapper;
+
+    public ProductServiceImp(ProductRepository productRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
+        this.modelMapper = modelMapper;
     }
 
     public List<ProductForListingDto> getAll() {
@@ -110,21 +116,25 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @Transactional
     public void add(ProductForAddDto request) {//burası voidti Product yaptım.
 
-        productWithSameName(request.getProductName());
-        productNameShouldNotLongerThanThreeCharacters(request.getProductName());
-        unitPricekShouldNotBeBiggerThan200(request.getUnitPrice());
-        productNameIsChangShouldNotAddNow(request.getProductName());
-        Product newProduct=Product.builder()
-                .productName(request.getProductName())
-                .unitPrice(request.getUnitPrice())
-                .unitInStock(request.getUnitInStock())
-                .categories(Category.builder().categoryId(request.getCategoryId()).build())
-                .suppliers(Supplier.builder().supplierId(request.getSupplierId()).build())
-                .discontinued(0)
-                .build();
-        productRepository.save(newProduct);
+//        productWithSameName(request.getProductName());
+//        productNameShouldNotLongerThanThreeCharacters(request.getProductName());
+//        unitPricekShouldNotBeBiggerThan200(request.getUnitPrice());
+//        productNameIsChangShouldNotAddNow(request.getProductName());
+//        Product newProduct=Product.builder()
+//                .productName(request.getProductName())
+//                .unitPrice(request.getUnitPrice())
+//                .unitInStock(request.getUnitInStock())
+//                .categories(Category.builder().categoryId(request.getCategoryId()).build())
+//                .suppliers(Supplier.builder().supplierId(request.getSupplierId()).build())
+//                .discontinued(0)
+//                .build();
+        Product productFromAutoMapping = modelMapper.map(request, Product.class);
+
+
+        productFromAutoMapping =productRepository.save(productFromAutoMapping);
 //        Product product=new Product();
 ////        product.setProductId();
 //        product.setProductName(request.getProductName());

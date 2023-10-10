@@ -7,22 +7,19 @@ import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForAddDto;
 import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForListingDto;
 import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForUpdateDto;
 import com.turkcell.spring.starter.repositories.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-
+@RequiredArgsConstructor
 public class CategoryServiceImp implements CategoryService {
     private final CategoryRepository categoryRepository;
-
-    @Autowired
-    public CategoryServiceImp(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
-
-
+    private final MessageSource messageSource;
 
 
     @Override
@@ -80,11 +77,13 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public Category updateDto( CategoryForUpdateDto categoryForUpdateDto) {
-       Category category=returnCategoryByIdExist(categoryForUpdateDto.getCategoryId());
-        category.setCategoryName(categoryForUpdateDto.getCategoryName());
-        category.setDescription(categoryForUpdateDto.getDescription());
-        return categoryRepository.save(category);
+    public void update(CategoryForUpdateDto request) {
+        Category categoryToUpdate = returnCategoryByIdIfExists(request.getId());
+
+        categoryToUpdate.setDescription(request.getDescription());
+        categoryToUpdate.setCategoryName(request.getCategoryName());
+
+        categoryRepository.save(categoryToUpdate);
     }
     @Override
     public List<CategoryForListingDto> getAll() {
@@ -101,18 +100,18 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public void deleteByCategoryId(int deleteId) {
 
-        Category categoryToDelete=returnCategoryByIdExist(deleteId);
+        Category categoryToDelete=returnCategoryByIdIfExists(deleteId);
 
 
         categoryRepository.delete(categoryToDelete);
 
     }
-    public Category returnCategoryByIdExist(int id){
-        Category categoryToDelete= categoryRepository.findById(id).orElse(null);
-        if (categoryToDelete==null)
-            throw new BusinessException("Böyle bir kategori bulunamadı");
+    private Category returnCategoryByIdIfExists(int id){
+        Category categoryToDelete = categoryRepository.findById(id).orElse(null);
+        if(categoryToDelete==null)
+            throw new BusinessException(
+                    messageSource.getMessage("categoryDoesNotExistWithGivenId", new Object[] {id}, LocaleContextHolder.getLocale()));
         return categoryToDelete;
-
     }
 
 

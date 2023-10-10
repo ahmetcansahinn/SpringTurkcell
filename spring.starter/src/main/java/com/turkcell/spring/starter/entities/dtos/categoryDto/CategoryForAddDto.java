@@ -21,10 +21,10 @@ public class CategoryForAddDto {
 
 
 
-
     @NotBlank(message = "Kategori adı girmek zorunludur.")
+    @Size(min=3,max=10,  message="{categoryNameShouldBeMinimum}")
     private String categoryName;
-//
+
     @NotBlank(message = "Açıklama alanı zorunludur.")
     private String description;
 }

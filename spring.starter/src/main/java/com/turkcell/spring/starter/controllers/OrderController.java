@@ -65,10 +65,9 @@ public class OrderController {
         return orderService.getOrderProductName();
     }
 
-    @PostMapping("saveDto")
-    public void add( @RequestBody OrderForAddDto2 request){
+    @PostMapping
+    public void add(@RequestBody OrderForAddDto2 request){
         orderService.add(request);
-
     }
 
 

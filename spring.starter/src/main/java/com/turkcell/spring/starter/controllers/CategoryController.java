@@ -44,11 +44,9 @@ public class CategoryController {
       categoryService.add(request);
         return new ResponseEntity("Kategori eklendi", HttpStatus.CREATED);
     }
-    @PutMapping("updateDto/{id}")
-    public ResponseEntity<Category> updateDto(@PathVariable("id") int id, @RequestBody @Valid CategoryForUpdateDto categoryForUpdateDto){
-        categoryService.updateDto(categoryForUpdateDto);
-        return new ResponseEntity<Category>(HttpStatus.CREATED);
-
+    @PutMapping()
+    public void update(@RequestBody CategoryForUpdateDto request){
+        categoryService.update(request);
     }
     public ResponseEntity<Category> getByCategoryId(@PathVariable("id") int CategoryId){
         Category getCategory=categoryService.getByCategoryId(CategoryId);

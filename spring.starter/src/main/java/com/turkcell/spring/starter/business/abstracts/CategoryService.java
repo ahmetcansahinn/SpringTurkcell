@@ -20,7 +20,7 @@ public interface CategoryService {
 
   List<Object[]> findCategoryAndProductDetails();
   void add(CategoryForAddDto request);
-  Category updateDto(CategoryForUpdateDto categoryForUpdateDto);
+  void update(CategoryForUpdateDto request);
 
 
 }

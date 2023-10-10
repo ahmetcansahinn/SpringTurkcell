@@ -15,11 +15,12 @@ public class CategoryForUpdateDto {
 
     @NotNull()
     @Min(1)
-    private int categoryId;
+    private int id;
 
-    @NotBlank(message = "Lütfen kategori adı giriniz.")
+    @NotBlank(message = "Kategori adı girmek zorunludur.")
+    @Size(min=5,message = "{categoryNameShouldBeMinimum}")
     private String categoryName;
 
-    @NotBlank(message = "Lütfen açıklama giriniz.")
+    @NotBlank(message = "Açıklama alanı zorunludur.")
     private String description;
 }

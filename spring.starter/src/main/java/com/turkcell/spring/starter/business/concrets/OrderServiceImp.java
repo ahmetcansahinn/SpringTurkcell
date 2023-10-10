@@ -10,6 +10,8 @@ import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto;
 import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForUpdateDto;
 import com.turkcell.spring.starter.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,10 +21,12 @@ public class OrderServiceImp implements OrderService {
 
     private OrderRepository orderRepository;
     private OrderDetailService orderDetailService;
+    private ModelMapper modelMapper;
 
-    public OrderServiceImp(OrderRepository orderRepository, OrderDetailService orderDetailService) {
+    public OrderServiceImp(OrderRepository orderRepository, OrderDetailService orderDetailService, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
         this.orderDetailService = orderDetailService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -66,19 +70,24 @@ public class OrderServiceImp implements OrderService {
     @Override
     @Transactional
     public void add(OrderForAddDto2 request) {
-        Order order=Order.builder().
-                customers(Customer.builder().customerId(request.getCustomerId()).build())
-                .orderDate(LocalDate.now())
-                .employees(Employee.builder().employeeId(request.getEmployeeId()).build())
-                .requiredDate(request.getRequiredDate())
-                .shipAddress(request.getShipAddress())
-                .shipCity(request.getShipCity())
-                .shipName(request.getShipName())
-                .shipRegion(request.getShipRegion())
-                .build();
-        order = orderRepository.save(order);
-//        throw new BusinessException(".");
-        orderDetailService.addItemsToOrder(order, request.getItems());
+
+//        Order order=Order.builder().
+//                customers(Customer.builder().customerId(request.getCustomerId()).build())
+//                .orderDate(LocalDate.now())
+//                .employees(Employee.builder().employeeId(request.getEmployeeId()).build())
+//                .requiredDate(request.getRequiredDate())
+//                .shipAddress(request.getShipAddress())
+//                .shipCity(request.getShipCity())
+//                .shipName(request.getShipName())
+//                .shipRegion(request.getShipRegion())
+//                .build();
+        Order orderFromAutoMapping = modelMapper.map(request, Order.class);
+
+
+        orderFromAutoMapping = orderRepository.save(orderFromAutoMapping);  // gönderen hesaptan parayı düş
+
+        // bu satırdan sonra order'ın id alanı set edilmiş..
+        orderDetailService.addItemsToOrder(orderFromAutoMapping, request.getItems());
     }
 
 

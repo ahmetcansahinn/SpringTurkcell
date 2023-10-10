@@ -15,11 +15,10 @@ import java.util.List;
 @Builder
 
 public class OrderForAddDto2 {
-    private String customerId;
+    private String customerId; // Normalde giriş yapmış kullanıcı otomatik idsi alınır..
     private short employeeId;
     private LocalDate requiredDate;
-
-    private short shipVia;
+    private short shipperId;
     private String shipName;
     private String shipAddress;
     private String shipCity;
