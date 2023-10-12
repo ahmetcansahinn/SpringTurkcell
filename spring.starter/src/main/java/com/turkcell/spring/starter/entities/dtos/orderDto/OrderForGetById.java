@@ -16,14 +16,16 @@ import java.time.LocalDate;
 public class OrderForGetById {
 
 //    @NotBlank(message = "customer id boş bırakılamaz.")
-
 //    private String customerId;
-
-//    @NotBlank(message = "Employe id boş bırakılamaz.")
+//    @NotBlank(message = "{employeeIdShouldNotBeBlank}")
 //    private short employeeId;
+
     private int orderId;
+
     private LocalDate orderDate;
+
     private LocalDate requiredDate;
+
     private LocalDate shippedDate;
 //    private short shipVia;
     private String freight;

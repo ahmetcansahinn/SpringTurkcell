@@ -12,14 +12,10 @@ import java.util.List;
 
 public interface OrderService {
     List<Order> getAll();
-    Order getByOrderId(int OrderId);
     void deleteByOrderId(long deleteByOrderId);
-
     List<OrderForListingDto> orderListing();
     OrderForGetById orderId(int orderId);
-
     Order updateOrder(int id, OrderForUpdateDto orderForUpdateDto);
-
     List<Object[]> getOrderProductName();
     void add(OrderForAddDto2 request);
 

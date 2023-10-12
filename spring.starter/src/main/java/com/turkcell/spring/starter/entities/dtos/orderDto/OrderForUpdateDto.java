@@ -1,6 +1,7 @@
 package com.turkcell.spring.starter.entities.dtos.orderDto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderForUpdateDto {
-
+    @PositiveOrZero(message="{orderIdIsShouldBePositiveOrZero}")
     private int orderId;
     private LocalDate orderDate;
     private LocalDate requiredDate;

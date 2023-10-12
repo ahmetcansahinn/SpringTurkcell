@@ -13,14 +13,13 @@ import lombok.*;
 @Builder
 public class CategoryForUpdateDto {
 
-    @NotNull()
-    @Min(1)
-    private int id;
 
-    @NotBlank(message = "Kategori adı girmek zorunludur.")
-    @Size(min=5,message = "{categoryNameShouldBeMinimum}")
+    private int categoryId;
+
+    @NotBlank(message = "{categoryNameShouldNotBeBlank}")
+    @Size(min=3,max=10,  message="{categoryNameShouldBeMinimum}")
     private String categoryName;
 
-    @NotBlank(message = "Açıklama alanı zorunludur.")
+    @NotBlank(message = "{descriptionShouldNotBeBlank}")
     private String description;
 }

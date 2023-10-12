@@ -1,10 +1,7 @@
 package com.turkcell.spring.starter.entities.dtos.productDto;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +16,11 @@ public class ProductForUpdateDto {
 
     private int productId;
 
-    @NotBlank(message = "ürün ismi boş olamaz")
+    @NotBlank(message = "{productNameShouldNotBeBlank}")
     private String productName;
     private String quantityPerUnit;
 
-    @Positive(message = "ürün fiyatı pozitif olmalıdır.")
+    @PositiveOrZero(message = "{unitPriceShouldBePositive}")
 
     private double unitPrice;
     private Short unitInStock;

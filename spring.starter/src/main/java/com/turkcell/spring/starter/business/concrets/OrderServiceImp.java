@@ -2,7 +2,7 @@ package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.OrderDetailService;
 import com.turkcell.spring.starter.business.abstracts.OrderService;
-import com.turkcell.spring.starter.business.exception.BusinessException;
+import com.turkcell.spring.starter.core.exceptions.types.BusinessException;
 import com.turkcell.spring.starter.entities.*;
 import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForAddDto2;
 import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForGetById;
@@ -10,23 +10,31 @@ import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForListingDto;
 import com.turkcell.spring.starter.entities.dtos.orderDto.OrderForUpdateDto;
 import com.turkcell.spring.starter.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 @Service
+//@RequiredArgsConstructor
 public class OrderServiceImp implements OrderService {
 
-    private OrderRepository orderRepository;
-    private OrderDetailService orderDetailService;
-    private ModelMapper modelMapper;
+    private final OrderRepository orderRepository;
+    private final OrderDetailService orderDetailService;
+    private final ModelMapper modelMapper;
+    private final MessageSource messageSource;
 
-    public OrderServiceImp(OrderRepository orderRepository, OrderDetailService orderDetailService, ModelMapper modelMapper) {
+    @Autowired
+
+    public OrderServiceImp(OrderRepository orderRepository, OrderDetailService orderDetailService, ModelMapper modelMapper, MessageSource messageSource) {
         this.orderRepository = orderRepository;
         this.orderDetailService = orderDetailService;
         this.modelMapper = modelMapper;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -34,11 +42,6 @@ public class OrderServiceImp implements OrderService {
         return orderRepository.findAll();
     }
 
-    @Override
-    public Order getByOrderId(int OrderId) {
-        return orderRepository.findById(OrderId).orElseThrow();
-
-    }
 
     @Override
     public void deleteByOrderId(long deleteByOrderId) {
@@ -48,24 +51,31 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public List<OrderForListingDto> orderListing() {
-      return orderRepository.getOrder();
+        return orderRepository.getOrder();
     }
 
     @Override
     public OrderForGetById orderId(int orderId) {
+
         return orderRepository.orderId(orderId);
     }
 
     @Override
     public Order updateOrder(int id, OrderForUpdateDto request) {
-        Order order=orderRepository.findById(id).orElseThrow();
-        order.setOrderId(request.getOrderId());
-        order.setOrderDate(LocalDate.now());
-        order.setRequiredDate(request.getRequiredDate());
-        order.setShippedDate(request.getShippedDate());
-        order.setFreight(request.getFreight());
-        return orderRepository.save(order);
+        Order order = orderRepository.findById(id).orElseThrow();
+        Order orderFromAutoMapping = modelMapper.map(request, Order.class);
+
+
+        return orderRepository.save(orderFromAutoMapping);
+//        order.setOrderId(request.getOrderId());
+//        order.setOrderDate(LocalDate.now());
+//        order.setRequiredDate(request.getRequiredDate());
+//        order.setShippedDate(request.getShippedDate());
+//        order.setFreight(request.getFreight());
+//        return orderRepository.save(order);
     }
+
+
 
     @Override
     @Transactional
@@ -81,9 +91,10 @@ public class OrderServiceImp implements OrderService {
 //                .shipName(request.getShipName())
 //                .shipRegion(request.getShipRegion())
 //                .build();
+        shipAddressShouldBeLessThan7Char(request.getShipAddress());
+        customerIdIsNotFound(request.getCustomerId());
+
         Order orderFromAutoMapping = modelMapper.map(request, Order.class);
-
-
         orderFromAutoMapping = orderRepository.save(orderFromAutoMapping);  // gönderen hesaptan parayı düş
 
         // bu satırdan sonra order'ın id alanı set edilmiş..
@@ -98,20 +109,15 @@ public class OrderServiceImp implements OrderService {
     }
 
 
-    public void orderIdShouldNotMoreThan13000(int orderId){
-        if(orderId>13000){
-            throw new BusinessException("Ürün Id'si 13000'den büyük olamaz.");
-        }
-    }
 
-    public void freightShouldBeLessThan7Char(String freight){
-        if (freight.length()>7){
-            throw new BusinessException("Belirtilen Freight alanı kurallara göre fazla");
+    public void shipAddressShouldBeLessThan7Char(String shipAddress){
+        if (shipAddress.length()<7){
+            throw new BusinessException(messageSource.getMessage("shipAddressShouldBeLessThan7Char", new Object[]{"shipperAdress"}, LocaleContextHolder.getLocale()));
         }
     }
     public void customerIdIsNotFound(String customerId){
         if(customerId.isEmpty()){
-            throw new BusinessException("Yazılan id'ye ait bir customer bulunmamaktadır.");
+            throw new BusinessException(messageSource.getMessage("customerIdIsNotFound", new Object[]{"customerId"}, LocaleContextHolder.getLocale()));
         }
     }
 

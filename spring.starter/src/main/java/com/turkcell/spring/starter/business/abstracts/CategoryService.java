@@ -17,10 +17,9 @@ public interface CategoryService {
   List<Category> search (String categoryName);
   Long countCategory();
   List<Category> getById(int id);
-
   List<Object[]> findCategoryAndProductDetails();
   void add(CategoryForAddDto request);
-  void update(CategoryForUpdateDto request);
+   Category update (int id, CategoryForUpdateDto request);
 
 
 }

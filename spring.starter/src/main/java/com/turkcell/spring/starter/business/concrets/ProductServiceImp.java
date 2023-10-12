@@ -1,37 +1,35 @@
 package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.ProductService;
-import com.turkcell.spring.starter.business.exception.BusinessException;
+import com.turkcell.spring.starter.core.exceptions.types.BusinessException;
 import com.turkcell.spring.starter.entities.Category;
-import com.turkcell.spring.starter.entities.Order;
 import com.turkcell.spring.starter.entities.Product;
-import com.turkcell.spring.starter.entities.Supplier;
 import com.turkcell.spring.starter.entities.dtos.productDto.ProductForAddDto;
 import com.turkcell.spring.starter.entities.dtos.productDto.ProductForGetByIdDto;
 import com.turkcell.spring.starter.entities.dtos.productDto.ProductForListingDto;
 import com.turkcell.spring.starter.entities.dtos.productDto.ProductForUpdateDto;
 import com.turkcell.spring.starter.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
-    private ProductRepository productRepository;
-    private ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
+    private final MessageSource messageSource;
 
-    public ProductServiceImp(ProductRepository productRepository, ModelMapper modelMapper) {
-        this.productRepository = productRepository;
-        this.modelMapper = modelMapper;
-    }
+
+
+
 
     public List<ProductForListingDto> getAll() {
         return productRepository.getListingProduct();
@@ -105,25 +103,24 @@ public class ProductServiceImp implements ProductService {
 
         Product product = productRepository.findById(id).orElseThrow();
 //        Product product = new Product();
-        product.setProductName(productForUpdateDto.getProductName());
-        product.setUnitPrice(productForUpdateDto.getUnitPrice());
-        product.setUnitInStock(productForUpdateDto.getUnitInStock());
-        product.setUnitOnOrder(productForUpdateDto.getUnitOnOrder());
-        product.setQuantityPerUnit(productForUpdateDto.getQuantityPerUnit());
-        product.setReorderLevel(productForUpdateDto.getReorderLevel());
-        product.setDiscontinued(0);
-        return productRepository.save(product);
+//        product.setProductName(productForUpdateDto.getProductName());
+//        product.setUnitPrice(productForUpdateDto.getUnitPrice());
+//        product.setUnitInStock(productForUpdateDto.getUnitInStock());
+//        product.setUnitOnOrder(productForUpdateDto.getUnitOnOrder());
+//        product.setQuantityPerUnit(productForUpdateDto.getQuantityPerUnit());
+//        product.setReorderLevel(productForUpdateDto.getReorderLevel());
+//        product.setDiscontinued(0);
+//        return productRepository.save(product);
+        modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        Product orderFromAutoMapping = modelMapper.map(productForUpdateDto, Product.class);
+        return productRepository.save(orderFromAutoMapping);
     }
 
-    @Override
-    @Transactional
-    public void add(ProductForAddDto request) {//burası voidti Product yaptım.
 
-//        productWithSameName(request.getProductName());
-//        productNameShouldNotLongerThanThreeCharacters(request.getProductName());
-//        unitPricekShouldNotBeBiggerThan200(request.getUnitPrice());
-//        productNameIsChangShouldNotAddNow(request.getProductName());
-//        Product newProduct=Product.builder()
+    @Override
+    public void add(ProductForAddDto request) {
+
+//        Product newProduct = Product.builder()
 //                .productName(request.getProductName())
 //                .unitPrice(request.getUnitPrice())
 //                .unitInStock(request.getUnitInStock())
@@ -131,49 +128,33 @@ public class ProductServiceImp implements ProductService {
 //                .suppliers(Supplier.builder().supplierId(request.getSupplierId()).build())
 //                .discontinued(0)
 //                .build();
-        Product productFromAutoMapping = modelMapper.map(request, Product.class);
-
-
-        productFromAutoMapping =productRepository.save(productFromAutoMapping);
-//        Product product=new Product();
-////        product.setProductId();
-//        product.setProductName(request.getProductName());
-//        product.setUnitPrice(request.getUnitPrice());
-//        product.setUnitInStock(request.getUnitInStock());
-//        product.setQuantityPerUnit(request.getQuantityPerUnit());
-//        product.setReorderLevel(request.getReOrderLevel());
-//       productRepository.save(product);
+        productWithSameName(request.getProductName());
+        productNameShouldNotLessThanThreeCharacters(request.getProductName());
+        unitPriceShouldNotBeBiggerThan50(request.getUnitPrice());
+       modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        Product orderFromAutoMapping = modelMapper.map(request, Product.class);
+       productRepository.save(orderFromAutoMapping);
 
     }
 
      public void productWithSameName(String productName){
       Product  productWithSameName=productRepository.findByProductName(productName);
         if(productWithSameName!=null){
-            throw new BusinessException("Aynı kategoride başka ürün bulunamaz");
+            throw new BusinessException(messageSource.getMessage("productWithSameName", new Object[]{"productName"},LocaleContextHolder.getLocale()));
         }
      }
-    private void productNameShouldNotLongerThanThreeCharacters(String productName){
+    private void productNameShouldNotLessThanThreeCharacters(String productName){
 
         if(productName.length()<=3){
-            throw new BusinessException("Ürün ismi 3 harften fazla olmalıdır ");
+            throw new BusinessException(messageSource.getMessage("productNameShouldNotLessThanThreeCharacters", new Object[]{"productName"}, LocaleContextHolder.getLocale()));
         }
     }
-    public void unitPricekShouldNotBeBiggerThan200(double unitPrice){
+    public void unitPriceShouldNotBeBiggerThan50(double unitPrice){
         if(unitPrice>50){
-            throw new BusinessException("Ürün fiyatı 50'den büyük olamaz.");
+            throw new BusinessException(messageSource.getMessage("unitPriceShouldNotBeBigger50",
+                    new Object[]{"UnitPrice"}, LocaleContextHolder.getLocale()));
         }
     }
-    public void productNameIsChangShouldNotAddNow(String productName){
-        if(productName.equals("Chang")){
-            throw new BusinessException("Chang isimli ürün şu an için kaydedilemiyor.");
-        }
-    }
-
-
-
-
-
-
 
 
 }

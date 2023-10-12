@@ -13,9 +13,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class OrderForListingDto {
     private int orderId;
+
     private LocalDate orderDate;
+
     private LocalDate requiredDate;
+
     private LocalDate shippedDate;
+
 //    private short shipVia;
     private String freight;
+
 }

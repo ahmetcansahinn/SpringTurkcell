@@ -21,9 +21,7 @@ public interface ProductService {
     List<Product> minManUnit(Integer minUnit, Integer maxUnit);
     Double maxUnitPrice();
     List<Product> groupById ();
-
     List<ProductForGetByIdDto> getListingProductId(int id);
-
     Product update(int id, ProductForUpdateDto productForUpdateDto);
     void add(ProductForAddDto request);
 

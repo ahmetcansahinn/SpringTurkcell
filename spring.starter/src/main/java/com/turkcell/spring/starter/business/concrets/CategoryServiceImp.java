@@ -1,14 +1,15 @@
 package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.CategoryService;
-import com.turkcell.spring.starter.business.exception.BusinessException;
+import com.turkcell.spring.starter.core.exceptions.types.BusinessException;
 import com.turkcell.spring.starter.entities.Category;
 import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForAddDto;
 import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForListingDto;
 import com.turkcell.spring.starter.entities.dtos.categoryDto.CategoryForUpdateDto;
 import com.turkcell.spring.starter.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImp implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
     private final MessageSource messageSource;
 
 
@@ -65,25 +67,27 @@ public class CategoryServiceImp implements CategoryService {
     public void add(CategoryForAddDto request) {
         // Business Rule => Aynı isimde iki kategori olmamalı
 
-//        descriptionWithSameNameShouldNotExist(request.getDescription());
-//        categoryWithSameNameShouldNotExist(request.getCategoryName());
-//        descriptionShouldNotMoreThan2Char(request.getDescription());
-        Category category = new Category();
-        category.setCategoryName(request.getCategoryName());
-        category.setDescription(request.getDescription());
+        categoryWithSameNameShouldNotExist(request.getCategoryName());
+        descriptionShouldNotMoreThan2Char(request.getDescription());
+//        Category category = new Category();
+//        category.setCategoryName(request.getCategoryName());
+//        category.setDescription(request.getDescription());
+//
+//        // Mapleme işlemi business içerisinde
+//        categoryRepository.save(category);
 
-        // Mapleme işlemi business içerisinde
-        categoryRepository.save(category);
+        modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        Category orderFromAutoMapping = modelMapper.map(request, Category.class);
+        categoryRepository.save(orderFromAutoMapping);
     }
 
     @Override
-    public void update(CategoryForUpdateDto request) {
-        Category categoryToUpdate = returnCategoryByIdIfExists(request.getId());
+    public Category update(int id, CategoryForUpdateDto request) {
 
-        categoryToUpdate.setDescription(request.getDescription());
-        categoryToUpdate.setCategoryName(request.getCategoryName());
-
-        categoryRepository.save(categoryToUpdate);
+        Category categorys=categoryRepository.findById(id).orElseThrow();
+        modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        Category category=modelMapper.map(request, Category.class);
+        return categoryRepository.save(category);
     }
     @Override
     public List<CategoryForListingDto> getAll() {
@@ -118,22 +122,17 @@ public class CategoryServiceImp implements CategoryService {
     private void categoryWithSameNameShouldNotExist(String categoryName) {
         Category categoryWithSameName = categoryRepository.findByCategoryName(categoryName);
         if (categoryWithSameName != null) {
-            throw new BusinessException("Aynı kategori isminden 2 kategori bulunamaz.");
+            throw new BusinessException(messageSource.getMessage("categoryWithSameNameShouldNotExist", new Object[]{"categoryName"}, LocaleContextHolder.getLocale()));
         }
-    }
+        }
+
 
     public void descriptionShouldNotMoreThan2Char(String description) {
         if (description.length() < 2) {
-            throw new BusinessException("Açıklama kısmı 2 harften az olamaz.");
+            throw new BusinessException(messageSource.getMessage("descriptionShouldNotLessThan2Char",new Object[]{"description"}, LocaleContextHolder.getLocale()));
         }
     }
 
-    private void descriptionWithSameNameShouldNotExist(String description) {
-        Category categoryWithSameName = categoryRepository.findByCategoryName(description);
-        if (description != null) {
-            throw new BusinessException("Aynı açıklamadan 2 tane bulunamaz.");
-        }
-    }
 }
 
 

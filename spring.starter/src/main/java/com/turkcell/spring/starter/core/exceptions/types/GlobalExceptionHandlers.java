@@ -1,6 +1,5 @@
-package com.turkcell.spring.starter;
+package com.turkcell.spring.starter.core.exceptions.types;
 
-import com.turkcell.spring.starter.business.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandlers {
