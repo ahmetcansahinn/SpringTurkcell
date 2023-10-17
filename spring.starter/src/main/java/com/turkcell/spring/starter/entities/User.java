@@ -29,13 +29,15 @@ public class User implements UserDetails {
     private String lastName;
     private String username;
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // roller
         // todo: refactor with multiple roles
-        return List.of(new SimpleGrantedAuthority(role));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
 

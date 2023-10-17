@@ -15,13 +15,14 @@ import java.util.List;
 @RequestMapping("home")
 @RequiredArgsConstructor
 public class HomeController {
+
     private final MessageSource messageSource;
 
     List<Product> productList = new ArrayList<>();
 
-    // http://localhost:8080/home GET İSTEĞİ
     @GetMapping("")
     public String get(){
+
         return messageSource.getMessage("hello", null,LocaleContextHolder.getLocale());
     }
 }

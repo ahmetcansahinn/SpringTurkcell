@@ -2,6 +2,7 @@ package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.AuthService;
 import com.turkcell.spring.starter.core.jwt.JwtService;
+import com.turkcell.spring.starter.entities.Role;
 import com.turkcell.spring.starter.entities.User;
 import com.turkcell.spring.starter.entities.dtos.auth.AuthenticationResponse;
 import com.turkcell.spring.starter.entities.dtos.auth.LoginRequest;
@@ -26,7 +27,7 @@ public class AuthManager implements AuthService {
         User user = User.builder()
                 .name(request.getName())
                 .lastName(request.getLastName())
-                .role("USER")
+                .role(Role.USER)
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
