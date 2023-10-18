@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="users")
@@ -30,15 +32,23 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
+
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    Role role;
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // roller
-        // todo: refactor with multiple roles
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        // Rollerinizi GrantedAuthority türünde dönüştürün
+        Set<SimpleGrantedAuthority> authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())) // "ROLE_" ön eki gereklidir
+                .collect(Collectors.toSet());
+
+        return authorities;
     }
+
 
 
     @Override
