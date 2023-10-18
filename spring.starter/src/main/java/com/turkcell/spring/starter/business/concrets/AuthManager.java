@@ -2,6 +2,7 @@ package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.AuthService;
 import com.turkcell.spring.starter.core.jwt.JwtService;
+import com.turkcell.spring.starter.entities.Admin;
 import com.turkcell.spring.starter.entities.Role;
 import com.turkcell.spring.starter.entities.User;
 import com.turkcell.spring.starter.entities.dtos.auth.AuthenticationResponse;
@@ -23,11 +24,11 @@ public class AuthManager implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request, Role role) {
         User user = User.builder()
                 .name(request.getName())
                 .lastName(request.getLastName())
-                .role(Role.USER)
+                .role(role)
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
@@ -35,6 +36,7 @@ public class AuthManager implements AuthService {
         userRepository.save(user);
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
+
     }
 
     @Override

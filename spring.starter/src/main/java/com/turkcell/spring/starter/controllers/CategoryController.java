@@ -29,7 +29,7 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/getAll")
+    @GetMapping
      public ResponseEntity<List<CategoryForListingDto>> getAll(){
         List<CategoryForListingDto> getCategory= categoryService.getAll();
 
@@ -41,7 +41,7 @@ public class CategoryController {
 
      return new ResponseEntity<Category>(saveAll,HttpStatus.CREATED);
     }
-    @PostMapping("saveDto")
+    @PostMapping
     public ResponseEntity add(@RequestBody @Valid CategoryForAddDto request){
       categoryService.add(request);
 

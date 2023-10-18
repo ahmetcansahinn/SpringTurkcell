@@ -1,6 +1,7 @@
 package com.turkcell.spring.starter.controllers;
 
 import com.turkcell.spring.starter.business.abstracts.AuthService;
+import com.turkcell.spring.starter.entities.Role;
 import com.turkcell.spring.starter.entities.dtos.auth.AuthenticationResponse;
 import com.turkcell.spring.starter.entities.dtos.auth.LoginRequest;
 import com.turkcell.spring.starter.entities.dtos.auth.RegisterRequest;
@@ -24,8 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public AuthenticationResponse register(@RequestBody RegisterRequest request){
-        return  authService.register(request);
+    public AuthenticationResponse register(@RequestBody RegisterRequest request, Role role){
+        return  authService.register(request, role);
     }
 }
 
