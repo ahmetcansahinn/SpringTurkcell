@@ -1,6 +1,5 @@
 package com.turkcell.spring.starter.core.jwt;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,6 +13,8 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+//  MAGIC STRING  //
+// 7:30
 @Service
 public class JwtService {
     @Value("${application.security.jwt.secret-key}")

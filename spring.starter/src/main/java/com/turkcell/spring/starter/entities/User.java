@@ -1,5 +1,6 @@
 package com.turkcell.spring.starter.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+// Spring Security'deki user ile uyumlu çalışabilmesi için `implements UserDetails`
 public class User implements UserDetails {
     @Id
     @Column(name="id")
@@ -31,8 +33,6 @@ public class User implements UserDetails {
     private String lastName;
     private String username;
     private String password;
-
-
     @ElementCollection(targetClass = Role.class)
     @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "role", nullable = false)

@@ -1,8 +1,5 @@
 package com.turkcell.spring.starter.entities.dtos.auth;
 
-import com.turkcell.spring.starter.entities.Role;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +14,4 @@ public class RegisterRequest {
     private String password;
     private String name;
     private String lastName;
-
-
 }
