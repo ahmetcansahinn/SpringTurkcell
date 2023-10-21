@@ -1,6 +1,5 @@
 package com.turkcell.spring.starter.entities;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name="users")
@@ -33,22 +30,26 @@ public class User implements UserDetails {
     private String lastName;
     private String username;
     private String password;
-    @ElementCollection(targetClass = Role.class)
-    @CollectionTable(name="user_roles", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private String role;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name="users_role",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
+    )
+    private List<Role> roles;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Rollerinizi GrantedAuthority türünde dönüştürün
-        Set<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())) // "ROLE_" ön eki gereklidir
-                .collect(Collectors.toSet());
-
-        return authorities;
+        // roller
+        // todo: refactor with multiple roles
+        List<SimpleGrantedAuthority> listOfRoles =
+                roles.stream().map((role) -> new SimpleGrantedAuthority(role.getName())).toList();
+        return listOfRoles;
     }
-
 
 
     @Override

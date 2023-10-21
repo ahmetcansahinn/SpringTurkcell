@@ -2,7 +2,6 @@ package com.turkcell.spring.starter.business.concrets;
 
 import com.turkcell.spring.starter.business.abstracts.AuthService;
 import com.turkcell.spring.starter.core.jwt.JwtService;
-import com.turkcell.spring.starter.entities.Role;
 import com.turkcell.spring.starter.entities.User;
 import com.turkcell.spring.starter.entities.dtos.auth.AuthenticationResponse;
 import com.turkcell.spring.starter.entities.dtos.auth.LoginRequest;
@@ -14,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
 @Service
 @RequiredArgsConstructor
 public class AuthManager implements AuthService {
@@ -25,14 +22,13 @@ public class AuthManager implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationResponse register(RegisterRequest request, Set<Role> roles) {
-        // Yeni bir kullanıcı oluşturun
+    public AuthenticationResponse register(RegisterRequest request) {
         User user = User.builder()
                 .name(request.getName())
                 .lastName(request.getLastName())
+                .role("USER")
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(roles)
                 .build();
 
         userRepository.save(user);

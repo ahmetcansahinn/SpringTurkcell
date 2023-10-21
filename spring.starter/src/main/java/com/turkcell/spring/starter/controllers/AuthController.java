@@ -1,20 +1,20 @@
 package com.turkcell.spring.starter.controllers;
 
+
 import com.turkcell.spring.starter.business.abstracts.AuthService;
-import com.turkcell.spring.starter.entities.Role;
 import com.turkcell.spring.starter.entities.dtos.auth.AuthenticationResponse;
 import com.turkcell.spring.starter.entities.dtos.auth.LoginRequest;
 import com.turkcell.spring.starter.entities.dtos.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
 
 
@@ -24,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public AuthenticationResponse register(@RequestBody RegisterRequest request, @RequestParam Set<Role> roles){
-        return  authService.register(request,roles);
+    public AuthenticationResponse register(@RequestBody RegisterRequest request){
+        return  authService.register(request);
     }
 }
 
